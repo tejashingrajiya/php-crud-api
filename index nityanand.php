@@ -164,8 +164,6 @@
 				
 				$("#add_form").on('submit',function(e){
 					e.preventDefault();
-					var id = $("#id").val();
-					
 					var jsonobj =jsondata("#add_form");
 					console.log(jsonobj);	
 					

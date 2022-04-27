@@ -14,7 +14,7 @@
 					<label for="name">Name</label>
 					<input type="text" class="form-control" id="name" name="name">
 				</div>
-				<input type="text" name="id" id="id" hidden="">
+				<input type="text" name="id" id="id" hidden="" value="0">
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">
@@ -22,9 +22,8 @@
 					<input type="text" class="form-control" id="email" name="email">
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
-			<button  type="submit" class="btn btn-primary">update</button>
-			
+			<button id="save" type="submit" class="btn btn-primary">Submit</button>
+			<button id="updt" type="submit" class="btn btn-primary">update</button>	
 		</form>
 		
 		<div class="table-responsive">
@@ -55,10 +54,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
+			$("#updt").hide();
+			$("#save").show();
 				//-----------------------display data--------------------------
 				function loadTable(){
 					$("#load_table").html("");
-					
 					$.ajax({
 						url:'http://localhost/php_api/fetchallrecord.php',
 						type: "GET",
@@ -119,6 +119,8 @@
 							$("#id").val(data[0].id);
 							$("#name").val(data[0].name);
 							$("#email").val(data[0].email);
+							$("#updt").show();
+							$("#save").hide();
 						}
 					});
 				});
@@ -126,6 +128,8 @@
 				
 				$("#add_form").on('submit',function(e){
 					e.preventDefault();
+					var valdiationname= $("#name").val();
+					var valdiationemail= $("#email").val();
 					var jsonobj =jsondata("#add_form");
 					console.log(jsonobj);
 					
@@ -150,8 +154,9 @@
 				});
 				//----------------------update data-------------------------
 				
-				$(".form_edit2").on('submit',function(e){
+				$('#updt').on("click",function(e){
 					e.preventDefault();
+					
 					var jsonobj =jsondata(".form_edit2");
 					console.log(jsonobj);	
 					if(jsonobj == false){
@@ -165,9 +170,10 @@
 							data: jsonobj,
 							dataType: 'json',
 							success : function(data){
-								$("#modal_user").modal('hide');
-								//loadTable();
-								//$("#add_form").trigger("reset");	
+								loadTable();
+								$(".form_edit2").trigger("reset");
+								$("#updt").hide();
+								$("#save").show();
 							}
 						});
 					}
@@ -203,13 +209,8 @@
 				});
 			});
 		</script>
-		<button id="buttonx">
-			update
-		</button>
-		
-		<button id="buttony">
-			edit
-		</button>
+		<button id="buttonx">update</button>
+		<button id="buttony">edi</button>
 	</body>
 </html>	
 
